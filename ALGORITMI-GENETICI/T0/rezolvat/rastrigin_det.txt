@@ -1,0 +1,27 @@
+----------------------------------
+N: 5
+global_best_y: -0.000000
+global_worst_y: -0.000000
+global_avg_y: -0.000000
+
+global_best_time: 0.000000
+global_worst_time: 0.000000
+global_avg_time: 0.000000
+----------------------------------
+N: 2
+global_best_y: -0.000000
+global_worst_y: -0.000000
+global_avg_y: -0.000000
+
+global_best_time: 0.000000
+global_worst_time: 0.000000
+global_avg_time: 0.000000
+----------------------------------
+N: 20
+global_best_y: 0.000000
+global_worst_y: 0.000000
+global_avg_y: 0.000000
+
+global_best_time: 10615.172295
+global_worst_time: 10615.172295
+global_avg_time: 10615.172295
