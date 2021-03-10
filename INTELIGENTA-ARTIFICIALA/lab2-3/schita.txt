@@ -1,0 +1,45 @@
+1. [(x0,y0),...(xn-1,yn-1)], (xn,yn), (xf,yf), 0<=xi<n_linii
+											   0<=yi<n_col
+
+	M[xi][yi]=1, 0<=i<=n
+	
+2. S_INIT -> [(x0,y0)], (x0,y0), (xf,yf)
+   S_FIN  -> [(x0,y0),...(xn-1,yn-1)], (xf,yf), (xf,yf)
+   
+   (x0,y0) = poz. de start; (xf,yf) = poz. de final
+   (xn,yn) = poz. curenta
+   
+	def init(M):
+		visited = []
+		pos_start = None
+		pos_end = None
+	
+		for i in range(len(M)):
+			for j in range(len(M[i])):
+				if M[i][j] == 'S': pos_start = tuple(i,j)
+				elif M[i][j] == 'F': pos_end = tuple(i,j)
+		visited.append(pos_start)
+	
+		return visited, pos_start, pos_end
+	
+	
+	def check_finish(visited, pos_curr, pos_end):
+		if pos_curr == pos_end:
+			return True
+		
+		return False
+	
+3.	def check_valid(visited, pos_curr, pos_end, pos_next):
+		if M[pos_next[0]][pos_next[1]] != 0:
+			return False
+		
+		if abs(pos_curr[0]+pos_curr[1]-pos_next[0]-pos_next[1]) > 1:
+			return False
+			
+		return True
+		
+	def trans(visited, pos_curr, pos_end, pos_next):
+		if check_valid(visited, pos_curr, pos_end, pos_next):
+			return visited.append(pos_curr), pos_next, pos_end)
+		
+		return False
