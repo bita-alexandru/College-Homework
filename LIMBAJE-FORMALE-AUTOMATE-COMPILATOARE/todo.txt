@@ -1,0 +1,28 @@
+// TODO: verifica daca id-ul depaseste lungimea maxima
+// TODO: verifica daca dimensiunea array-ului depaseste lungimea maxima
+// TODO: verifica daca lungimea unei valori depaseste lungimea maxima
+// TODO: verifica daca const are o val asignata
+// TODO: verifica daca var din dreapta = a fost initializata
+// TODO: verifica daca valoarea din dreapta = are acelasi tip ca var din stanga =
+// TODO: verifica daca var/func/struct e deja declarat (considera: scope-ul, var vs varglobal vs struct vs func vs func param dif)
+
+// TODO: verifica daca func apelata a fost definita
+// TODO: verifica daca func apelata are parametrii valizi
+
+// TODO: operatii cu stringuri
+// TODO: verifica daca parametrii sunt stringuri
+
+// TODO: construieste simbolul pt o valoare
+// TODO: construieste simbolul pt o expresie
+// TODO: verifica daca 2 operanzi intr-o expresie au acelasi tip
+
+// TODO: returneaza valoarea pt accesului unui element din array/struct
+// TODO: returneaza valoarea in urma apelului unei functii
+
+// TODO: implementeaza if/else/while/for
+// TODO: implementeaza rularea unei functii si returneaza valoarea
+// TODO: construieste blocul de cod
+
+// TODO: implementeaza afisarea pe ecran
+
+// TODO: implementeaza Eval(int expr)

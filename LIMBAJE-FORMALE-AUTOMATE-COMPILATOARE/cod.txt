@@ -1,0 +1,139 @@
+@structures {
+    struct StructureOne {
+        ?int a;
+        ?int b;
+
+        ?int c;
+        func string alallafpfkaspf(?bool aokdokqwod) {
+            return "oKDADOPASKDOA";
+        }
+    };
+
+    struct StructureTwo {
+        ?float x:=1.1;
+        ?float x1;
+        ?float x2;
+        ?float y;
+
+        func float FloatFuncOne(?float z) {
+            ?bool aaaaaa := true;
+            ?bool bbbbb := false;
+            return 2.5;
+        }
+    };
+}
+
+@functions {
+    func bool SimpleBoolFunc() {
+        return true;
+    }
+
+    func int SimpleIntFunc(?int x) {
+        ?int a := 10;
+        ?int b := 20;
+
+        return 10;
+    }
+
+    func float AdvancedFloatFunc(?float f1, ?float f2, ?string method) {
+        ?float returnValue;
+
+        return returnValue;
+    }
+}
+
+@global {
+    ?int a;
+    ?int myInteger1;
+    ?int myInteger2;
+    !int myConstInteger := 777;
+
+    ?string myString := "cool string";
+    ?string your_string := "lame string...";
+
+    ?char myChar := 'A';
+
+    ?bool myBool := false;
+
+    ?float myFloat := 1.;
+
+    ?int<10> myIntArray;
+
+    #StructureOne outerStruct;
+}
+
+@main {
+    ?bool simpleBool := ~SimpleBoolFunc();
+    ?float<2> someValues := [~AdvancedFloatFunc(20.25, 12.75, "unspecified")];
+    ``myConstInteger := 1;
+    ~SimpleIntFunc(20);
+
+    ?int i := 1;
+    ?int increment := 2;
+    ?int notInitialised;
+    for (start:=i, stop:=10, step:=increment) {
+        i := $i+increment$;
+
+        print(i);
+        print();
+
+        for (start:=4, stop:=$4+9$, step:=1) {
+            while ($3<4$) {
+                ?string s1 := "aaa";
+                ?string s2 := "bbb";
+
+                if ($s1 == s2$) {
+                    print();
+                }
+                else {
+                    print($s1 + " si " + s2 + " nu sunt identice"$); print();
+                }
+            }
+        }
+    }
+
+    while($i>=0$) {
+        i := $i-1$;
+    }
+
+    print(i);
+    print();
+
+    print();
+    print($not 1$);
+    print();
+
+    ``i := notInitialised;
+
+    ?char<10> charArray := ['a', 'b', 'c', 'd'];
+    print(charArray);
+    print();
+
+    ?string<3> stringNume := ["Bita Alexandru", "Lila Marian"];
+    print(stringNume);
+    print();
+
+    ?int<5> intArr := [1,2,3,4,5];
+
+    ``rezultat=true
+    print($(intArr[1]>intArr[0]) and (not 2>3)$);
+    print();
+
+    ?string msj := $'a'+"bcd"$;
+    print(msj);
+    print();
+
+    ?string cpy;
+    copy(cpy,"aaaa");
+    print(cpy);
+    print();
+
+    ?string cat := "123";
+    concat(cat,"456");
+    print(cat);
+    print();
+
+    ``~Eval($3*4.5$);
+
+    #OuterStruct<2> structArray;
+}

@@ -1,0 +1,83 @@
+IS_VAR 1
+IS_CONST 2
+IS_FUNC 3
+TYPE_INT 1
+TYPE_FLOAT 2
+TYPE_CHAR 3
+TYPE_STRING 4
+TYPE_BOOL 5
+TYPE_STRUCT 6
+DIM_UNI 1
+DIM_ARRAY 2
+SCOPE_GLOBAL 1
+SCOPE_FUNCTION 2
+SCOPE_STRUCT 3
+OP_EVALUARE 1
+OP_PRINTARE 2
+OP_DECL_VAR 3
+OP_DECL_STRUCT 4
+OP_DECL_FUNC 5
+OP_ASIGNARE 6
+OP_APEL_FUNC 7
+OP_IF_START 8
+OP_IF_STOP 9
+OP_ELSE_START 10
+OP_ELSE_STOP 11
+OP_WHILE_START 12
+OP_WHILE_STOP 13
+OP_FOR_START 14
+OP_FOR_STOP 15
+
+char* curr_scope;
+char* prev_scope;
+
+Symbol** variables;
+Symbol** functions;
+
+struct Line {
+	int operation;
+	int condition;
+	char* left;
+	int rightint;
+	char rightchar;
+	char* rightstr;
+	int start;
+	int stop;
+	int step;
+} **lines;
+
+struct Symbol {
+	char* id;
+	int is;
+	int type;
+	int dim;
+	char* scope;
+	int intvalue;
+	char charvalue;
+	char* strvalue;
+	Symbol** paramvals;
+	char** paramtypes;
+	int* intelems;
+	char* charelems;
+	char** strelems;
+}
+
+void update_scope();
+
+Symbol create_symbol(char* id, int is, int type, int dim, char* scope, int intvalue, char charvalue, char* strvalue, Symbol** paramvals, char** paramtypes, int* intelems, char* charelems, char** strelems);
+
+void check_valid(Symbol* symbol, int operation);
+
+void add_symbol(Symbol* symbol);
+
+Symbol* get_symbol(char* id);
+
+void modify_symbol(Symbol* symbol);
+
+void print_symbol(Symbol* symbol);
+
+void print_symbol_table();
+
+void add_line(int n_block, Line* line);
+
+void run_code(Line** lines);

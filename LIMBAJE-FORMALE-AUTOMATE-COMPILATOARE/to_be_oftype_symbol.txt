@@ -1,0 +1,17 @@
+%type <symbol>listaParam 
+%type <symbol>declarareParam
+%type <symbol>parametru
+%type <symbol>listaValori
+%type <symbol>valoare
+%type <symbol>expresie
+%type <symbol>accesArray
+%type <symbol>accesStruct
+%type <symbol>apelFunctie
+
+struct Symbol symbol = create_symbol(
+			// id, is, type, dim, scope, structure, init, numvalue, chrvalue, strvalue, n_params, paramvals, paramtypes, n_elements, elements
+			0, 0, 0, 0, scope, NONE_S, 0, 0, 0, NONE_S, 0, NONE_PV, NONE_PT, 0, NONE_E
+			);
+
+$$ = (symbol*)malloc(sizeof(symbol));
+copy_symbol($$, &symbol);

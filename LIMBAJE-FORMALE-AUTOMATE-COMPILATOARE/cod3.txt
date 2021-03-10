@@ -1,0 +1,17 @@
+@structures {
+
+}
+
+@functions {
+
+}
+
+@global {
+
+}
+
+@main {
+    ?char<10> charArray := ['a', 'b', 'c', 'd'];
+    print(charArray);
+    print();
+}

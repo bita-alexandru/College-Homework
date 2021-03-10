@@ -1,0 +1,328 @@
+@structures
+   *ID: StructureOne
+    IS: structure
+    TYPE: none
+    SCOPE: STRUCTURES
+       *ID: alallafpfkaspf
+        IS: function
+        TYPE: string
+        SCOPE: STRUCTURES StructureOne
+        NO. OF PARAMETERS: 1
+        PARAMETERS TYPES: bool; 
+           *ID: aokdokqwod
+            IS: variable
+            TYPE: bool
+            SCOPE: STRUCTURES StructureOne alallafpfkaspf
+            DIMENSIONALITY: singular
+            INITIALIZED: no
+       *ID: a
+        IS: variable
+        TYPE: int
+        SCOPE: STRUCTURES StructureOne
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: b
+        IS: variable
+        TYPE: int
+        SCOPE: STRUCTURES StructureOne
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: c
+        IS: variable
+        TYPE: int
+        SCOPE: STRUCTURES StructureOne
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+   *ID: StructureTwo
+    IS: structure
+    TYPE: none
+    SCOPE: STRUCTURES
+       *ID: FloatFuncOne
+        IS: function
+        TYPE: float
+        SCOPE: STRUCTURES StructureTwo
+        NO. OF PARAMETERS: 1
+        PARAMETERS TYPES: float; 
+           *ID: z
+            IS: variable
+            TYPE: float
+            SCOPE: STRUCTURES StructureTwo FloatFuncOne
+            DIMENSIONALITY: singular
+            INITIALIZED: no
+           *ID: aaaaaa
+            IS: variable
+            TYPE: bool
+            SCOPE: STRUCTURES StructureTwo FloatFuncOne
+            DIMENSIONALITY: singular
+            INITIALIZED: yes
+            VALUE: 0
+           *ID: bbbbb
+            IS: variable
+            TYPE: bool
+            SCOPE: STRUCTURES StructureTwo FloatFuncOne
+            DIMENSIONALITY: singular
+            INITIALIZED: yes
+            VALUE: 0
+       *ID: x
+        IS: variable
+        TYPE: float
+        SCOPE: STRUCTURES StructureTwo
+        DIMENSIONALITY: singular
+        INITIALIZED: yes
+        VALUE: -1610612736
+       *ID: x1
+        IS: variable
+        TYPE: float
+        SCOPE: STRUCTURES StructureTwo
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: x2
+        IS: variable
+        TYPE: float
+        SCOPE: STRUCTURES StructureTwo
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: y
+        IS: variable
+        TYPE: float
+        SCOPE: STRUCTURES StructureTwo
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+@functions
+   *ID: SimpleBoolFunc
+    IS: function
+    TYPE: bool
+    SCOPE: FUNCTIONS
+    NO. OF PARAMETERS: 0
+   *ID: SimpleIntFunc
+    IS: function
+    TYPE: int
+    SCOPE: FUNCTIONS
+    NO. OF PARAMETERS: 1
+    PARAMETERS TYPES: int; 
+       *ID: x
+        IS: variable
+        TYPE: int
+        SCOPE: FUNCTIONS SimpleIntFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: a
+        IS: variable
+        TYPE: int
+        SCOPE: FUNCTIONS SimpleIntFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: yes
+        VALUE: 0
+       *ID: b
+        IS: variable
+        TYPE: int
+        SCOPE: FUNCTIONS SimpleIntFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: yes
+        VALUE: 0
+   *ID: AdvancedFloatFunc
+    IS: function
+    TYPE: float
+    SCOPE: FUNCTIONS
+    NO. OF PARAMETERS: 3
+    PARAMETERS TYPES: float; float; string; 
+       *ID: f1
+        IS: variable
+        TYPE: float
+        SCOPE: FUNCTIONS AdvancedFloatFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: f2
+        IS: variable
+        TYPE: float
+        SCOPE: FUNCTIONS AdvancedFloatFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: method
+        IS: variable
+        TYPE: string
+        SCOPE: FUNCTIONS AdvancedFloatFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+       *ID: returnValue
+        IS: variable
+        TYPE: float
+        SCOPE: FUNCTIONS AdvancedFloatFunc
+        DIMENSIONALITY: singular
+        INITIALIZED: no
+@global
+   *ID: a
+    IS: variable
+    TYPE: int
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: no
+   *ID: myInteger1
+    IS: variable
+    TYPE: int
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: no
+   *ID: myInteger2
+    IS: variable
+    TYPE: int
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: no
+   *ID: myConstInteger
+    IS: constant
+    TYPE: int
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: myString
+    IS: variable
+    TYPE: string
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "cool string"
+   *ID: your_string
+    IS: variable
+    TYPE: string
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "lame string..."
+   *ID: myChar
+    IS: variable
+    TYPE: char
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: A
+   *ID: myBool
+    IS: variable
+    TYPE: bool
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: myFloat
+    IS: variable
+    TYPE: float
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: myIntArray
+    IS: variable
+    TYPE: int
+    SCOPE: GLOBAL
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 10
+    INITIALIZED: no
+   *ID: outerStruct
+    IS: variable
+    TYPE: struct<StructureOne>
+    SCOPE: GLOBAL
+    DIMENSIONALITY: singular
+    INITIALIZED: no
+@main
+   *ID: simpleBool
+    IS: variable
+    TYPE: bool
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: someValues
+    IS: variable
+    TYPE: float
+    SCOPE: MAIN
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 2
+    INITIALIZED: yes
+    ELEMENTS: 0.000000; ; 
+   *ID: i
+    IS: variable
+    TYPE: int
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: increment
+    IS: variable
+    TYPE: int
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: 0
+   *ID: notInitialised
+    IS: variable
+    TYPE: int
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: no
+   *ID: s1
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "aaa"
+   *ID: s2
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "bbb"
+   *ID: charArray
+    IS: variable
+    TYPE: char
+    SCOPE: MAIN
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 10
+    INITIALIZED: yes
+    ELEMENTS: a; b; c; d; ; ; ; ; ; ; 
+   *ID: stringNume
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 3
+    INITIALIZED: yes
+    ELEMENTS: "Bita Alexandru"; "Lila Marian"; ; 
+   *ID: intArr
+    IS: variable
+    TYPE: int
+    SCOPE: MAIN
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 5
+    INITIALIZED: yes
+    ELEMENTS: 1; 2; 3; 4; 5; 
+   *ID: msj
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "abcd"
+   *ID: cpy
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "aaaa"
+   *ID: cat
+    IS: variable
+    TYPE: string
+    SCOPE: MAIN
+    DIMENSIONALITY: singular
+    INITIALIZED: yes
+    VALUE: "123456"
+   *ID: structArray
+    IS: variable
+    TYPE: struct<OuterStruct>
+    SCOPE: MAIN
+    DIMENSIONALITY: array
+    NO. OF ELEMENTS: 2
+    INITIALIZED: no

@@ -1,0 +1,3247 @@
+Grammar
+
+    0 $accept: limbaj $end
+
+    1 limbaj: blocGlobal blocFunctii blocMain
+
+    2 blocGlobal: GLOBAL '{' '}'
+    3           | GLOBAL '{' listaDeclarari '}'
+
+    4 blocFunctii: FUNCTII '{' '}'
+    5            | FUNCTII '{' listaFunctii '}'
+
+    6 blocMain: MAIN '{' '}'
+    7         | MAIN '{' blocCod '}'
+
+    8 listaDeclarari: declarareVar ';'
+    9               | listaDeclarari declarareVar ';'
+   10               | constructieStruct ';'
+   11               | listaDeclarari constructieStruct ';'
+   12               | declarareStruct ';'
+   13               | listaDeclarari declarareStruct ';'
+
+   14 declarareVar: VARCONST TIP ID
+   15             | VARCONST TIP ID ATRIBUIRE NUMAR
+   16             | VARCONST TIP ID ATRIBUIRE ID
+   17             | VARCONST TIP ID ATRIBUIRE SIR
+   18             | VARCONST TIP ID ATRIBUIRE accesArray
+   19             | VARCONST TIP ID ATRIBUIRE accesStruct
+   20             | VARCONST TIP DIMENSIUNE ID
+   21             | VARCONST TIP DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+   22 constructieStruct: STRUCT ID '{' listaDeclarari '}'
+
+   23 declarareStruct: VARCONST '@' ID ID
+   24                | VARCONST '@' ID ID ATRIBUIRE '{' listaValori '}'
+   25                | VARCONST '@' ID DIMENSIUNE ID
+   26                | VARCONST '@' ID DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+   27 listaValori: valoare
+   28            | listaValori ',' valoare
+   29            | '[' listaValori ']'
+   30            | '{' listaValori '}'
+
+   31 valoare: SIR
+   32        | NUMAR
+   33        | '-' NUMAR
+   34        | ID
+   35        | accesArray
+   36        | accesStruct
+   37        | apelFunctie
+   38        | '$' expresie '$'
+
+   39 expresie: ID
+   40         | NUMAR
+   41         | SIR
+   42         | accesArray
+   43         | accesStruct
+   44         | apelFunctie
+   45         | '(' expresie ')'
+   46         | expresie ADD expresie
+   47         | expresie SUB expresie
+   48         | expresie MUL expresie
+   49         | expresie DIV expresie
+   50         | expresie EQ expresie
+   51         | expresie GT expresie
+   52         | expresie LT expresie
+   53         | expresie GE expresie
+   54         | expresie LE expresie
+   55         | expresie AND expresie
+   56         | expresie OR expresie
+   57         | expresie XOR expresie
+   58         | expresie NOT expresie
+
+   59 listaFunctii: declarareFunctie
+   60             | listaFunctii declarareFunctie
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP ID '(' ')' '{' RETURN valoare ';' '}'
+   63                 | FUNC TIP ID '(' declarareParam ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID '(' declarareParam ')' '{' RETURN valoare ';' '}'
+
+   65 apelFunctie: ID '(' ')'
+   66            | ID '(' listaParam ')'
+
+   67 listaParam: valoare
+   68           | listaParam ',' valoare
+
+   69 declarareParam: parametru
+   70               | declarareParam ',' parametru
+
+   71 parametru: VARCONST TIP ID
+   72          | VARCONST TIP DIMENSIUNE ID
+
+   73 blocCod: linieCod
+   74        | blocCod linieCod
+
+   75 linieCod: declarareVar ';'
+   76         | constructieStruct ';'
+   77         | declarareStruct ';'
+   78         | asignare ';'
+   79         | apelFunctie ';'
+   80         | controlIfElse
+   81         | controlWhile
+   82         | controlFor
+
+   83 asignare: ID ATRIBUIRE listaValori
+   84         | accesArray ATRIBUIRE listaValori
+   85         | accesStruct ATRIBUIRE listaValori
+
+   86 accesArray: ID '[' valoare ']'
+
+   87 accesStruct: ID SELECTOR ID
+   88            | ID SELECTOR accesArray
+   89            | ID SELECTOR accesStruct
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF '(' valoare ')' ';'
+   91              | IF '(' valoare ')' '{' blocCod '}' ELSE '{' blocCod '}'
+   92              | IF '(' valoare ')' '{' blocCod '}' ELSE ';'
+   93              | IF '(' valoare ')' ';' ELSE '{' blocCod '}'
+   94              | IF '(' valoare ')' ';' ELSE ';'
+
+   95 controlWhile: WHILE '(' valoare ')' '{' blocCod '}'
+   96             | WHILE '(' valoare ')' ';'
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'$' (36) 38
+'(' (40) 45 61 62 63 64 65 66 90 91 92 93 94 95 96 97
+')' (41) 45 61 62 63 64 65 66 90 91 92 93 94 95 96 97
+',' (44) 28 68 70 97
+'-' (45) 33
+';' (59) 8 9 10 11 12 13 61 62 63 64 75 76 77 78 79 90 92 93 94 96
+    97
+'@' (64) 23 24 25 26
+'[' (91) 21 26 29 86
+']' (93) 21 26 29 86
+'{' (123) 2 3 4 5 6 7 22 24 30 61 62 63 64 90 91 92 93 95 97
+'}' (125) 2 3 4 5 6 7 22 24 30 61 62 63 64 90 91 92 93 95 97
+error (256)
+ID (258) 14 15 16 17 18 19 20 21 22 23 24 25 26 34 39 61 62 63 64 65
+    66 71 72 83 86 87 88 89
+TIP (259) 14 15 16 17 18 19 20 21 61 62 63 64 71 72
+VARCONST (260) 14 15 16 17 18 19 20 21 23 24 25 26 71 72
+DIMENSIUNE (261) 20 21 25 26 72
+ATRIBUIRE (262) 15 16 17 18 19 21 24 26 83 84 85 97
+NUMAR (263) 15 32 33 40
+SIR (264) 17 31 41
+STRUCT (265) 22
+SELECTOR (266) 87 88 89
+GLOBAL (267) 2 3
+FUNCTII (268) 4 5
+MAIN (269) 6 7
+IF (270) 90 91 92 93 94
+ELSE (271) 91 92 93 94
+WHILE (272) 95 96
+FOR (273) 97
+FOR_START (274) 97
+FOR_STOP (275) 97
+FOR_STEP (276) 97
+FUNC (277) 61 62 63 64
+RETURN (278) 61 62 63 64
+ADD (279) 46
+SUB (280) 47
+DIV (281) 49
+MUL (282) 48
+AND (283) 55
+OR (284) 56
+XOR (285) 57
+NOT (286) 58
+EQ (287) 50
+GT (288) 51
+GE (289) 53
+LT (290) 52
+LE (291) 54
+
+
+Nonterminals, with rules where they appear
+
+$accept (48)
+    on left: 0
+limbaj (49)
+    on left: 1, on right: 0
+blocGlobal (50)
+    on left: 2 3, on right: 1
+blocFunctii (51)
+    on left: 4 5, on right: 1
+blocMain (52)
+    on left: 6 7, on right: 1
+listaDeclarari (53)
+    on left: 8 9 10 11 12 13, on right: 3 9 11 13 22
+declarareVar (54)
+    on left: 14 15 16 17 18 19 20 21, on right: 8 9 75
+constructieStruct (55)
+    on left: 22, on right: 10 11 76
+declarareStruct (56)
+    on left: 23 24 25 26, on right: 12 13 77
+listaValori (57)
+    on left: 27 28 29 30, on right: 21 24 26 28 29 30 83 84 85
+valoare (58)
+    on left: 31 32 33 34 35 36 37 38, on right: 27 28 61 62 63 64 67
+    68 86 90 91 92 93 94 95 96 97
+expresie (59)
+    on left: 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56
+    57 58, on right: 38 45 46 47 48 49 50 51 52 53 54 55 56 57 58
+listaFunctii (60)
+    on left: 59 60, on right: 5 60
+declarareFunctie (61)
+    on left: 61 62 63 64, on right: 59 60
+apelFunctie (62)
+    on left: 65 66, on right: 37 44 79
+listaParam (63)
+    on left: 67 68, on right: 66 68
+declarareParam (64)
+    on left: 69 70, on right: 63 64 70
+parametru (65)
+    on left: 71 72, on right: 69 70
+blocCod (66)
+    on left: 73 74, on right: 7 61 63 74 90 91 92 93 95 97
+linieCod (67)
+    on left: 75 76 77 78 79 80 81 82, on right: 73 74
+asignare (68)
+    on left: 83 84 85, on right: 78
+accesArray (69)
+    on left: 86, on right: 18 35 42 84 88
+accesStruct (70)
+    on left: 87 88 89, on right: 19 36 43 85 89
+controlIfElse (71)
+    on left: 90 91 92 93 94, on right: 80
+controlWhile (72)
+    on left: 95 96, on right: 81
+controlFor (73)
+    on left: 97, on right: 82
+
+
+State 0
+
+    0 $accept: . limbaj $end
+
+    GLOBAL  shift, and go to state 1
+
+    limbaj      go to state 2
+    blocGlobal  go to state 3
+
+
+State 1
+
+    2 blocGlobal: GLOBAL . '{' '}'
+    3           | GLOBAL . '{' listaDeclarari '}'
+
+    '{'  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: limbaj . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 limbaj: blocGlobal . blocFunctii blocMain
+
+    FUNCTII  shift, and go to state 6
+
+    blocFunctii  go to state 7
+
+
+State 4
+
+    2 blocGlobal: GLOBAL '{' . '}'
+    3           | GLOBAL '{' . listaDeclarari '}'
+
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    '}'       shift, and go to state 10
+
+    listaDeclarari     go to state 11
+    declarareVar       go to state 12
+    constructieStruct  go to state 13
+    declarareStruct    go to state 14
+
+
+State 5
+
+    0 $accept: limbaj $end .
+
+    $default  accept
+
+
+State 6
+
+    4 blocFunctii: FUNCTII . '{' '}'
+    5            | FUNCTII . '{' listaFunctii '}'
+
+    '{'  shift, and go to state 15
+
+
+State 7
+
+    1 limbaj: blocGlobal blocFunctii . blocMain
+
+    MAIN  shift, and go to state 16
+
+    blocMain  go to state 17
+
+
+State 8
+
+   14 declarareVar: VARCONST . TIP ID
+   15             | VARCONST . TIP ID ATRIBUIRE NUMAR
+   16             | VARCONST . TIP ID ATRIBUIRE ID
+   17             | VARCONST . TIP ID ATRIBUIRE SIR
+   18             | VARCONST . TIP ID ATRIBUIRE accesArray
+   19             | VARCONST . TIP ID ATRIBUIRE accesStruct
+   20             | VARCONST . TIP DIMENSIUNE ID
+   21             | VARCONST . TIP DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+   23 declarareStruct: VARCONST . '@' ID ID
+   24                | VARCONST . '@' ID ID ATRIBUIRE '{' listaValori '}'
+   25                | VARCONST . '@' ID DIMENSIUNE ID
+   26                | VARCONST . '@' ID DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+    TIP  shift, and go to state 18
+    '@'  shift, and go to state 19
+
+
+State 9
+
+   22 constructieStruct: STRUCT . ID '{' listaDeclarari '}'
+
+    ID  shift, and go to state 20
+
+
+State 10
+
+    2 blocGlobal: GLOBAL '{' '}' .
+
+    $default  reduce using rule 2 (blocGlobal)
+
+
+State 11
+
+    3 blocGlobal: GLOBAL '{' listaDeclarari . '}'
+    9 listaDeclarari: listaDeclarari . declarareVar ';'
+   11               | listaDeclarari . constructieStruct ';'
+   13               | listaDeclarari . declarareStruct ';'
+
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    '}'       shift, and go to state 21
+
+    declarareVar       go to state 22
+    constructieStruct  go to state 23
+    declarareStruct    go to state 24
+
+
+State 12
+
+    8 listaDeclarari: declarareVar . ';'
+
+    ';'  shift, and go to state 25
+
+
+State 13
+
+   10 listaDeclarari: constructieStruct . ';'
+
+    ';'  shift, and go to state 26
+
+
+State 14
+
+   12 listaDeclarari: declarareStruct . ';'
+
+    ';'  shift, and go to state 27
+
+
+State 15
+
+    4 blocFunctii: FUNCTII '{' . '}'
+    5            | FUNCTII '{' . listaFunctii '}'
+
+    FUNC  shift, and go to state 28
+    '}'   shift, and go to state 29
+
+    listaFunctii      go to state 30
+    declarareFunctie  go to state 31
+
+
+State 16
+
+    6 blocMain: MAIN . '{' '}'
+    7         | MAIN . '{' blocCod '}'
+
+    '{'  shift, and go to state 32
+
+
+State 17
+
+    1 limbaj: blocGlobal blocFunctii blocMain .
+
+    $default  reduce using rule 1 (limbaj)
+
+
+State 18
+
+   14 declarareVar: VARCONST TIP . ID
+   15             | VARCONST TIP . ID ATRIBUIRE NUMAR
+   16             | VARCONST TIP . ID ATRIBUIRE ID
+   17             | VARCONST TIP . ID ATRIBUIRE SIR
+   18             | VARCONST TIP . ID ATRIBUIRE accesArray
+   19             | VARCONST TIP . ID ATRIBUIRE accesStruct
+   20             | VARCONST TIP . DIMENSIUNE ID
+   21             | VARCONST TIP . DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+    ID          shift, and go to state 33
+    DIMENSIUNE  shift, and go to state 34
+
+
+State 19
+
+   23 declarareStruct: VARCONST '@' . ID ID
+   24                | VARCONST '@' . ID ID ATRIBUIRE '{' listaValori '}'
+   25                | VARCONST '@' . ID DIMENSIUNE ID
+   26                | VARCONST '@' . ID DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+    ID  shift, and go to state 35
+
+
+State 20
+
+   22 constructieStruct: STRUCT ID . '{' listaDeclarari '}'
+
+    '{'  shift, and go to state 36
+
+
+State 21
+
+    3 blocGlobal: GLOBAL '{' listaDeclarari '}' .
+
+    $default  reduce using rule 3 (blocGlobal)
+
+
+State 22
+
+    9 listaDeclarari: listaDeclarari declarareVar . ';'
+
+    ';'  shift, and go to state 37
+
+
+State 23
+
+   11 listaDeclarari: listaDeclarari constructieStruct . ';'
+
+    ';'  shift, and go to state 38
+
+
+State 24
+
+   13 listaDeclarari: listaDeclarari declarareStruct . ';'
+
+    ';'  shift, and go to state 39
+
+
+State 25
+
+    8 listaDeclarari: declarareVar ';' .
+
+    $default  reduce using rule 8 (listaDeclarari)
+
+
+State 26
+
+   10 listaDeclarari: constructieStruct ';' .
+
+    $default  reduce using rule 10 (listaDeclarari)
+
+
+State 27
+
+   12 listaDeclarari: declarareStruct ';' .
+
+    $default  reduce using rule 12 (listaDeclarari)
+
+
+State 28
+
+   61 declarareFunctie: FUNC . TIP ID '(' ')' '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC . TIP ID '(' ')' '{' RETURN valoare ';' '}'
+   63                 | FUNC . TIP ID '(' declarareParam ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC . TIP ID '(' declarareParam ')' '{' RETURN valoare ';' '}'
+
+    TIP  shift, and go to state 40
+
+
+State 29
+
+    4 blocFunctii: FUNCTII '{' '}' .
+
+    $default  reduce using rule 4 (blocFunctii)
+
+
+State 30
+
+    5 blocFunctii: FUNCTII '{' listaFunctii . '}'
+   60 listaFunctii: listaFunctii . declarareFunctie
+
+    FUNC  shift, and go to state 28
+    '}'   shift, and go to state 41
+
+    declarareFunctie  go to state 42
+
+
+State 31
+
+   59 listaFunctii: declarareFunctie .
+
+    $default  reduce using rule 59 (listaFunctii)
+
+
+State 32
+
+    6 blocMain: MAIN '{' . '}'
+    7         | MAIN '{' . blocCod '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 47
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 52
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 33
+
+   14 declarareVar: VARCONST TIP ID .
+   15             | VARCONST TIP ID . ATRIBUIRE NUMAR
+   16             | VARCONST TIP ID . ATRIBUIRE ID
+   17             | VARCONST TIP ID . ATRIBUIRE SIR
+   18             | VARCONST TIP ID . ATRIBUIRE accesArray
+   19             | VARCONST TIP ID . ATRIBUIRE accesStruct
+
+    ATRIBUIRE  shift, and go to state 60
+
+    $default  reduce using rule 14 (declarareVar)
+
+
+State 34
+
+   20 declarareVar: VARCONST TIP DIMENSIUNE . ID
+   21             | VARCONST TIP DIMENSIUNE . ID ATRIBUIRE '[' listaValori ']'
+
+    ID  shift, and go to state 61
+
+
+State 35
+
+   23 declarareStruct: VARCONST '@' ID . ID
+   24                | VARCONST '@' ID . ID ATRIBUIRE '{' listaValori '}'
+   25                | VARCONST '@' ID . DIMENSIUNE ID
+   26                | VARCONST '@' ID . DIMENSIUNE ID ATRIBUIRE '[' listaValori ']'
+
+    ID          shift, and go to state 62
+    DIMENSIUNE  shift, and go to state 63
+
+
+State 36
+
+   22 constructieStruct: STRUCT ID '{' . listaDeclarari '}'
+
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+
+    listaDeclarari     go to state 64
+    declarareVar       go to state 12
+    constructieStruct  go to state 13
+    declarareStruct    go to state 14
+
+
+State 37
+
+    9 listaDeclarari: listaDeclarari declarareVar ';' .
+
+    $default  reduce using rule 9 (listaDeclarari)
+
+
+State 38
+
+   11 listaDeclarari: listaDeclarari constructieStruct ';' .
+
+    $default  reduce using rule 11 (listaDeclarari)
+
+
+State 39
+
+   13 listaDeclarari: listaDeclarari declarareStruct ';' .
+
+    $default  reduce using rule 13 (listaDeclarari)
+
+
+State 40
+
+   61 declarareFunctie: FUNC TIP . ID '(' ')' '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP . ID '(' ')' '{' RETURN valoare ';' '}'
+   63                 | FUNC TIP . ID '(' declarareParam ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP . ID '(' declarareParam ')' '{' RETURN valoare ';' '}'
+
+    ID  shift, and go to state 65
+
+
+State 41
+
+    5 blocFunctii: FUNCTII '{' listaFunctii '}' .
+
+    $default  reduce using rule 5 (blocFunctii)
+
+
+State 42
+
+   60 listaFunctii: listaFunctii declarareFunctie .
+
+    $default  reduce using rule 60 (listaFunctii)
+
+
+State 43
+
+   65 apelFunctie: ID . '(' ')'
+   66            | ID . '(' listaParam ')'
+   83 asignare: ID . ATRIBUIRE listaValori
+   86 accesArray: ID . '[' valoare ']'
+   87 accesStruct: ID . SELECTOR ID
+   88            | ID . SELECTOR accesArray
+   89            | ID . SELECTOR accesStruct
+
+    ATRIBUIRE  shift, and go to state 66
+    SELECTOR   shift, and go to state 67
+    '('        shift, and go to state 68
+    '['        shift, and go to state 69
+
+
+State 44
+
+   90 controlIfElse: IF . '(' valoare ')' '{' blocCod '}' IF '(' valoare ')' ';'
+   91              | IF . '(' valoare ')' '{' blocCod '}' ELSE '{' blocCod '}'
+   92              | IF . '(' valoare ')' '{' blocCod '}' ELSE ';'
+   93              | IF . '(' valoare ')' ';' ELSE '{' blocCod '}'
+   94              | IF . '(' valoare ')' ';' ELSE ';'
+
+    '('  shift, and go to state 70
+
+
+State 45
+
+   95 controlWhile: WHILE . '(' valoare ')' '{' blocCod '}'
+   96             | WHILE . '(' valoare ')' ';'
+
+    '('  shift, and go to state 71
+
+
+State 46
+
+   97 controlFor: FOR . '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    '('  shift, and go to state 72
+
+
+State 47
+
+    6 blocMain: MAIN '{' '}' .
+
+    $default  reduce using rule 6 (blocMain)
+
+
+State 48
+
+   75 linieCod: declarareVar . ';'
+
+    ';'  shift, and go to state 73
+
+
+State 49
+
+   76 linieCod: constructieStruct . ';'
+
+    ';'  shift, and go to state 74
+
+
+State 50
+
+   77 linieCod: declarareStruct . ';'
+
+    ';'  shift, and go to state 75
+
+
+State 51
+
+   79 linieCod: apelFunctie . ';'
+
+    ';'  shift, and go to state 76
+
+
+State 52
+
+    7 blocMain: MAIN '{' blocCod . '}'
+   74 blocCod: blocCod . linieCod
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 77
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 53
+
+   73 blocCod: linieCod .
+
+    $default  reduce using rule 73 (blocCod)
+
+
+State 54
+
+   78 linieCod: asignare . ';'
+
+    ';'  shift, and go to state 79
+
+
+State 55
+
+   84 asignare: accesArray . ATRIBUIRE listaValori
+
+    ATRIBUIRE  shift, and go to state 80
+
+
+State 56
+
+   85 asignare: accesStruct . ATRIBUIRE listaValori
+
+    ATRIBUIRE  shift, and go to state 81
+
+
+State 57
+
+   80 linieCod: controlIfElse .
+
+    $default  reduce using rule 80 (linieCod)
+
+
+State 58
+
+   81 linieCod: controlWhile .
+
+    $default  reduce using rule 81 (linieCod)
+
+
+State 59
+
+   82 linieCod: controlFor .
+
+    $default  reduce using rule 82 (linieCod)
+
+
+State 60
+
+   15 declarareVar: VARCONST TIP ID ATRIBUIRE . NUMAR
+   16             | VARCONST TIP ID ATRIBUIRE . ID
+   17             | VARCONST TIP ID ATRIBUIRE . SIR
+   18             | VARCONST TIP ID ATRIBUIRE . accesArray
+   19             | VARCONST TIP ID ATRIBUIRE . accesStruct
+
+    ID     shift, and go to state 82
+    NUMAR  shift, and go to state 83
+    SIR    shift, and go to state 84
+
+    accesArray   go to state 85
+    accesStruct  go to state 86
+
+
+State 61
+
+   20 declarareVar: VARCONST TIP DIMENSIUNE ID .
+   21             | VARCONST TIP DIMENSIUNE ID . ATRIBUIRE '[' listaValori ']'
+
+    ATRIBUIRE  shift, and go to state 87
+
+    $default  reduce using rule 20 (declarareVar)
+
+
+State 62
+
+   23 declarareStruct: VARCONST '@' ID ID .
+   24                | VARCONST '@' ID ID . ATRIBUIRE '{' listaValori '}'
+
+    ATRIBUIRE  shift, and go to state 88
+
+    $default  reduce using rule 23 (declarareStruct)
+
+
+State 63
+
+   25 declarareStruct: VARCONST '@' ID DIMENSIUNE . ID
+   26                | VARCONST '@' ID DIMENSIUNE . ID ATRIBUIRE '[' listaValori ']'
+
+    ID  shift, and go to state 89
+
+
+State 64
+
+    9 listaDeclarari: listaDeclarari . declarareVar ';'
+   11               | listaDeclarari . constructieStruct ';'
+   13               | listaDeclarari . declarareStruct ';'
+   22 constructieStruct: STRUCT ID '{' listaDeclarari . '}'
+
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    '}'       shift, and go to state 90
+
+    declarareVar       go to state 22
+    constructieStruct  go to state 23
+    declarareStruct    go to state 24
+
+
+State 65
+
+   61 declarareFunctie: FUNC TIP ID . '(' ')' '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP ID . '(' ')' '{' RETURN valoare ';' '}'
+   63                 | FUNC TIP ID . '(' declarareParam ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID . '(' declarareParam ')' '{' RETURN valoare ';' '}'
+
+    '('  shift, and go to state 91
+
+
+State 66
+
+   83 asignare: ID ATRIBUIRE . listaValori
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 99
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 67
+
+   87 accesStruct: ID SELECTOR . ID
+   88            | ID SELECTOR . accesArray
+   89            | ID SELECTOR . accesStruct
+
+    ID  shift, and go to state 104
+
+    accesArray   go to state 105
+    accesStruct  go to state 106
+
+
+State 68
+
+   65 apelFunctie: ID '(' . ')'
+   66            | ID '(' . listaParam ')'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    ')'    shift, and go to state 107
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 108
+    apelFunctie  go to state 101
+    listaParam   go to state 109
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 69
+
+   86 accesArray: ID '[' . valoare ']'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 110
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 70
+
+   90 controlIfElse: IF '(' . valoare ')' '{' blocCod '}' IF '(' valoare ')' ';'
+   91              | IF '(' . valoare ')' '{' blocCod '}' ELSE '{' blocCod '}'
+   92              | IF '(' . valoare ')' '{' blocCod '}' ELSE ';'
+   93              | IF '(' . valoare ')' ';' ELSE '{' blocCod '}'
+   94              | IF '(' . valoare ')' ';' ELSE ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 111
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 71
+
+   95 controlWhile: WHILE '(' . valoare ')' '{' blocCod '}'
+   96             | WHILE '(' . valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 112
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 72
+
+   97 controlFor: FOR '(' . FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_START  shift, and go to state 113
+
+
+State 73
+
+   75 linieCod: declarareVar ';' .
+
+    $default  reduce using rule 75 (linieCod)
+
+
+State 74
+
+   76 linieCod: constructieStruct ';' .
+
+    $default  reduce using rule 76 (linieCod)
+
+
+State 75
+
+   77 linieCod: declarareStruct ';' .
+
+    $default  reduce using rule 77 (linieCod)
+
+
+State 76
+
+   79 linieCod: apelFunctie ';' .
+
+    $default  reduce using rule 79 (linieCod)
+
+
+State 77
+
+    7 blocMain: MAIN '{' blocCod '}' .
+
+    $default  reduce using rule 7 (blocMain)
+
+
+State 78
+
+   74 blocCod: blocCod linieCod .
+
+    $default  reduce using rule 74 (blocCod)
+
+
+State 79
+
+   78 linieCod: asignare ';' .
+
+    $default  reduce using rule 78 (linieCod)
+
+
+State 80
+
+   84 asignare: accesArray ATRIBUIRE . listaValori
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 114
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 81
+
+   85 asignare: accesStruct ATRIBUIRE . listaValori
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 115
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 82
+
+   16 declarareVar: VARCONST TIP ID ATRIBUIRE ID .
+   86 accesArray: ID . '[' valoare ']'
+   87 accesStruct: ID . SELECTOR ID
+   88            | ID . SELECTOR accesArray
+   89            | ID . SELECTOR accesStruct
+
+    SELECTOR  shift, and go to state 67
+    '['       shift, and go to state 69
+
+    $default  reduce using rule 16 (declarareVar)
+
+
+State 83
+
+   15 declarareVar: VARCONST TIP ID ATRIBUIRE NUMAR .
+
+    $default  reduce using rule 15 (declarareVar)
+
+
+State 84
+
+   17 declarareVar: VARCONST TIP ID ATRIBUIRE SIR .
+
+    $default  reduce using rule 17 (declarareVar)
+
+
+State 85
+
+   18 declarareVar: VARCONST TIP ID ATRIBUIRE accesArray .
+
+    $default  reduce using rule 18 (declarareVar)
+
+
+State 86
+
+   19 declarareVar: VARCONST TIP ID ATRIBUIRE accesStruct .
+
+    $default  reduce using rule 19 (declarareVar)
+
+
+State 87
+
+   21 declarareVar: VARCONST TIP DIMENSIUNE ID ATRIBUIRE . '[' listaValori ']'
+
+    '['  shift, and go to state 116
+
+
+State 88
+
+   24 declarareStruct: VARCONST '@' ID ID ATRIBUIRE . '{' listaValori '}'
+
+    '{'  shift, and go to state 117
+
+
+State 89
+
+   25 declarareStruct: VARCONST '@' ID DIMENSIUNE ID .
+   26                | VARCONST '@' ID DIMENSIUNE ID . ATRIBUIRE '[' listaValori ']'
+
+    ATRIBUIRE  shift, and go to state 118
+
+    $default  reduce using rule 25 (declarareStruct)
+
+
+State 90
+
+   22 constructieStruct: STRUCT ID '{' listaDeclarari '}' .
+
+    $default  reduce using rule 22 (constructieStruct)
+
+
+State 91
+
+   61 declarareFunctie: FUNC TIP ID '(' . ')' '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP ID '(' . ')' '{' RETURN valoare ';' '}'
+   63                 | FUNC TIP ID '(' . declarareParam ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID '(' . declarareParam ')' '{' RETURN valoare ';' '}'
+
+    VARCONST  shift, and go to state 119
+    ')'       shift, and go to state 120
+
+    declarareParam  go to state 121
+    parametru       go to state 122
+
+
+State 92
+
+   34 valoare: ID .
+   65 apelFunctie: ID . '(' ')'
+   66            | ID . '(' listaParam ')'
+   86 accesArray: ID . '[' valoare ']'
+   87 accesStruct: ID . SELECTOR ID
+   88            | ID . SELECTOR accesArray
+   89            | ID . SELECTOR accesStruct
+
+    SELECTOR  shift, and go to state 67
+    '('       shift, and go to state 68
+    '['       shift, and go to state 69
+
+    $default  reduce using rule 34 (valoare)
+
+
+State 93
+
+   32 valoare: NUMAR .
+
+    $default  reduce using rule 32 (valoare)
+
+
+State 94
+
+   31 valoare: SIR .
+
+    $default  reduce using rule 31 (valoare)
+
+
+State 95
+
+   29 listaValori: '[' . listaValori ']'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 123
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 96
+
+   30 listaValori: '{' . listaValori '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 124
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 97
+
+   33 valoare: '-' . NUMAR
+
+    NUMAR  shift, and go to state 125
+
+
+State 98
+
+   38 valoare: '$' . expresie '$'
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 130
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 99
+
+   28 listaValori: listaValori . ',' valoare
+   83 asignare: ID ATRIBUIRE listaValori .
+
+    ','  shift, and go to state 134
+
+    $default  reduce using rule 83 (asignare)
+
+
+State 100
+
+   27 listaValori: valoare .
+
+    $default  reduce using rule 27 (listaValori)
+
+
+State 101
+
+   37 valoare: apelFunctie .
+
+    $default  reduce using rule 37 (valoare)
+
+
+State 102
+
+   35 valoare: accesArray .
+
+    $default  reduce using rule 35 (valoare)
+
+
+State 103
+
+   36 valoare: accesStruct .
+
+    $default  reduce using rule 36 (valoare)
+
+
+State 104
+
+   86 accesArray: ID . '[' valoare ']'
+   87 accesStruct: ID . SELECTOR ID
+   87            | ID SELECTOR ID .
+   88            | ID . SELECTOR accesArray
+   89            | ID . SELECTOR accesStruct
+
+    SELECTOR  shift, and go to state 67
+    '['       shift, and go to state 69
+
+    $default  reduce using rule 87 (accesStruct)
+
+
+State 105
+
+   88 accesStruct: ID SELECTOR accesArray .
+
+    $default  reduce using rule 88 (accesStruct)
+
+
+State 106
+
+   89 accesStruct: ID SELECTOR accesStruct .
+
+    $default  reduce using rule 89 (accesStruct)
+
+
+State 107
+
+   65 apelFunctie: ID '(' ')' .
+
+    $default  reduce using rule 65 (apelFunctie)
+
+
+State 108
+
+   67 listaParam: valoare .
+
+    $default  reduce using rule 67 (listaParam)
+
+
+State 109
+
+   66 apelFunctie: ID '(' listaParam . ')'
+   68 listaParam: listaParam . ',' valoare
+
+    ')'  shift, and go to state 135
+    ','  shift, and go to state 136
+
+
+State 110
+
+   86 accesArray: ID '[' valoare . ']'
+
+    ']'  shift, and go to state 137
+
+
+State 111
+
+   90 controlIfElse: IF '(' valoare . ')' '{' blocCod '}' IF '(' valoare ')' ';'
+   91              | IF '(' valoare . ')' '{' blocCod '}' ELSE '{' blocCod '}'
+   92              | IF '(' valoare . ')' '{' blocCod '}' ELSE ';'
+   93              | IF '(' valoare . ')' ';' ELSE '{' blocCod '}'
+   94              | IF '(' valoare . ')' ';' ELSE ';'
+
+    ')'  shift, and go to state 138
+
+
+State 112
+
+   95 controlWhile: WHILE '(' valoare . ')' '{' blocCod '}'
+   96             | WHILE '(' valoare . ')' ';'
+
+    ')'  shift, and go to state 139
+
+
+State 113
+
+   97 controlFor: FOR '(' FOR_START . ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 140
+
+
+State 114
+
+   28 listaValori: listaValori . ',' valoare
+   84 asignare: accesArray ATRIBUIRE listaValori .
+
+    ','  shift, and go to state 134
+
+    $default  reduce using rule 84 (asignare)
+
+
+State 115
+
+   28 listaValori: listaValori . ',' valoare
+   85 asignare: accesStruct ATRIBUIRE listaValori .
+
+    ','  shift, and go to state 134
+
+    $default  reduce using rule 85 (asignare)
+
+
+State 116
+
+   21 declarareVar: VARCONST TIP DIMENSIUNE ID ATRIBUIRE '[' . listaValori ']'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 141
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 117
+
+   24 declarareStruct: VARCONST '@' ID ID ATRIBUIRE '{' . listaValori '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 142
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 118
+
+   26 declarareStruct: VARCONST '@' ID DIMENSIUNE ID ATRIBUIRE . '[' listaValori ']'
+
+    '['  shift, and go to state 143
+
+
+State 119
+
+   71 parametru: VARCONST . TIP ID
+   72          | VARCONST . TIP DIMENSIUNE ID
+
+    TIP  shift, and go to state 144
+
+
+State 120
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' . '{' blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP ID '(' ')' . '{' RETURN valoare ';' '}'
+
+    '{'  shift, and go to state 145
+
+
+State 121
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam . ')' '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID '(' declarareParam . ')' '{' RETURN valoare ';' '}'
+   70 declarareParam: declarareParam . ',' parametru
+
+    ')'  shift, and go to state 146
+    ','  shift, and go to state 147
+
+
+State 122
+
+   69 declarareParam: parametru .
+
+    $default  reduce using rule 69 (declarareParam)
+
+
+State 123
+
+   28 listaValori: listaValori . ',' valoare
+   29            | '[' listaValori . ']'
+
+    ']'  shift, and go to state 148
+    ','  shift, and go to state 134
+
+
+State 124
+
+   28 listaValori: listaValori . ',' valoare
+   30            | '{' listaValori . '}'
+
+    '}'  shift, and go to state 149
+    ','  shift, and go to state 134
+
+
+State 125
+
+   33 valoare: '-' NUMAR .
+
+    $default  reduce using rule 33 (valoare)
+
+
+State 126
+
+   39 expresie: ID .
+   65 apelFunctie: ID . '(' ')'
+   66            | ID . '(' listaParam ')'
+   86 accesArray: ID . '[' valoare ']'
+   87 accesStruct: ID . SELECTOR ID
+   88            | ID . SELECTOR accesArray
+   89            | ID . SELECTOR accesStruct
+
+    SELECTOR  shift, and go to state 67
+    '('       shift, and go to state 68
+    '['       shift, and go to state 69
+
+    $default  reduce using rule 39 (expresie)
+
+
+State 127
+
+   40 expresie: NUMAR .
+
+    $default  reduce using rule 40 (expresie)
+
+
+State 128
+
+   41 expresie: SIR .
+
+    $default  reduce using rule 41 (expresie)
+
+
+State 129
+
+   45 expresie: '(' . expresie ')'
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 150
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 130
+
+   38 valoare: '$' expresie . '$'
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    ADD  shift, and go to state 151
+    SUB  shift, and go to state 152
+    DIV  shift, and go to state 153
+    MUL  shift, and go to state 154
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+    '$'  shift, and go to state 164
+
+
+State 131
+
+   44 expresie: apelFunctie .
+
+    $default  reduce using rule 44 (expresie)
+
+
+State 132
+
+   42 expresie: accesArray .
+
+    $default  reduce using rule 42 (expresie)
+
+
+State 133
+
+   43 expresie: accesStruct .
+
+    $default  reduce using rule 43 (expresie)
+
+
+State 134
+
+   28 listaValori: listaValori ',' . valoare
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 165
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 135
+
+   66 apelFunctie: ID '(' listaParam ')' .
+
+    $default  reduce using rule 66 (apelFunctie)
+
+
+State 136
+
+   68 listaParam: listaParam ',' . valoare
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 166
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 137
+
+   86 accesArray: ID '[' valoare ']' .
+
+    $default  reduce using rule 86 (accesArray)
+
+
+State 138
+
+   90 controlIfElse: IF '(' valoare ')' . '{' blocCod '}' IF '(' valoare ')' ';'
+   91              | IF '(' valoare ')' . '{' blocCod '}' ELSE '{' blocCod '}'
+   92              | IF '(' valoare ')' . '{' blocCod '}' ELSE ';'
+   93              | IF '(' valoare ')' . ';' ELSE '{' blocCod '}'
+   94              | IF '(' valoare ')' . ';' ELSE ';'
+
+    '{'  shift, and go to state 167
+    ';'  shift, and go to state 168
+
+
+State 139
+
+   95 controlWhile: WHILE '(' valoare ')' . '{' blocCod '}'
+   96             | WHILE '(' valoare ')' . ';'
+
+    '{'  shift, and go to state 169
+    ';'  shift, and go to state 170
+
+
+State 140
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE . valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 171
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 141
+
+   21 declarareVar: VARCONST TIP DIMENSIUNE ID ATRIBUIRE '[' listaValori . ']'
+   28 listaValori: listaValori . ',' valoare
+
+    ']'  shift, and go to state 172
+    ','  shift, and go to state 134
+
+
+State 142
+
+   24 declarareStruct: VARCONST '@' ID ID ATRIBUIRE '{' listaValori . '}'
+   28 listaValori: listaValori . ',' valoare
+
+    '}'  shift, and go to state 173
+    ','  shift, and go to state 134
+
+
+State 143
+
+   26 declarareStruct: VARCONST '@' ID DIMENSIUNE ID ATRIBUIRE '[' . listaValori ']'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '['    shift, and go to state 95
+    '{'    shift, and go to state 96
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    listaValori  go to state 174
+    valoare      go to state 100
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 144
+
+   71 parametru: VARCONST TIP . ID
+   72          | VARCONST TIP . DIMENSIUNE ID
+
+    ID          shift, and go to state 175
+    DIMENSIUNE  shift, and go to state 176
+
+
+State 145
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' . blocCod RETURN valoare ';' '}'
+   62                 | FUNC TIP ID '(' ')' '{' . RETURN valoare ';' '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    RETURN    shift, and go to state 177
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 178
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 146
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' . '{' blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID '(' declarareParam ')' . '{' RETURN valoare ';' '}'
+
+    '{'  shift, and go to state 179
+
+
+State 147
+
+   70 declarareParam: declarareParam ',' . parametru
+
+    VARCONST  shift, and go to state 119
+
+    parametru  go to state 180
+
+
+State 148
+
+   29 listaValori: '[' listaValori ']' .
+
+    $default  reduce using rule 29 (listaValori)
+
+
+State 149
+
+   30 listaValori: '{' listaValori '}' .
+
+    $default  reduce using rule 30 (listaValori)
+
+
+State 150
+
+   45 expresie: '(' expresie . ')'
+   46         | expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    ADD  shift, and go to state 151
+    SUB  shift, and go to state 152
+    DIV  shift, and go to state 153
+    MUL  shift, and go to state 154
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+    ')'  shift, and go to state 181
+
+
+State 151
+
+   46 expresie: expresie ADD . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 182
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 152
+
+   47 expresie: expresie SUB . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 183
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 153
+
+   49 expresie: expresie DIV . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 184
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 154
+
+   48 expresie: expresie MUL . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 185
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 155
+
+   55 expresie: expresie AND . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 186
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 156
+
+   56 expresie: expresie OR . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 187
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 157
+
+   57 expresie: expresie XOR . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 188
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 158
+
+   58 expresie: expresie NOT . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 189
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 159
+
+   50 expresie: expresie EQ . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 190
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 160
+
+   51 expresie: expresie GT . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 191
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 161
+
+   53 expresie: expresie GE . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 192
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 162
+
+   52 expresie: expresie LT . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 193
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 163
+
+   54 expresie: expresie LE . expresie
+
+    ID     shift, and go to state 126
+    NUMAR  shift, and go to state 127
+    SIR    shift, and go to state 128
+    '('    shift, and go to state 129
+
+    expresie     go to state 194
+    apelFunctie  go to state 131
+    accesArray   go to state 132
+    accesStruct  go to state 133
+
+
+State 164
+
+   38 valoare: '$' expresie '$' .
+
+    $default  reduce using rule 38 (valoare)
+
+
+State 165
+
+   28 listaValori: listaValori ',' valoare .
+
+    $default  reduce using rule 28 (listaValori)
+
+
+State 166
+
+   68 listaParam: listaParam ',' valoare .
+
+    $default  reduce using rule 68 (listaParam)
+
+
+State 167
+
+   90 controlIfElse: IF '(' valoare ')' '{' . blocCod '}' IF '(' valoare ')' ';'
+   91              | IF '(' valoare ')' '{' . blocCod '}' ELSE '{' blocCod '}'
+   92              | IF '(' valoare ')' '{' . blocCod '}' ELSE ';'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 195
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 168
+
+   93 controlIfElse: IF '(' valoare ')' ';' . ELSE '{' blocCod '}'
+   94              | IF '(' valoare ')' ';' . ELSE ';'
+
+    ELSE  shift, and go to state 196
+
+
+State 169
+
+   95 controlWhile: WHILE '(' valoare ')' '{' . blocCod '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 197
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 170
+
+   96 controlWhile: WHILE '(' valoare ')' ';' .
+
+    $default  reduce using rule 96 (controlWhile)
+
+
+State 171
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare . ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ','  shift, and go to state 198
+
+
+State 172
+
+   21 declarareVar: VARCONST TIP DIMENSIUNE ID ATRIBUIRE '[' listaValori ']' .
+
+    $default  reduce using rule 21 (declarareVar)
+
+
+State 173
+
+   24 declarareStruct: VARCONST '@' ID ID ATRIBUIRE '{' listaValori '}' .
+
+    $default  reduce using rule 24 (declarareStruct)
+
+
+State 174
+
+   26 declarareStruct: VARCONST '@' ID DIMENSIUNE ID ATRIBUIRE '[' listaValori . ']'
+   28 listaValori: listaValori . ',' valoare
+
+    ']'  shift, and go to state 199
+    ','  shift, and go to state 134
+
+
+State 175
+
+   71 parametru: VARCONST TIP ID .
+
+    $default  reduce using rule 71 (parametru)
+
+
+State 176
+
+   72 parametru: VARCONST TIP DIMENSIUNE . ID
+
+    ID  shift, and go to state 200
+
+
+State 177
+
+   62 declarareFunctie: FUNC TIP ID '(' ')' '{' RETURN . valoare ';' '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 201
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 178
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod . RETURN valoare ';' '}'
+   74 blocCod: blocCod . linieCod
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    RETURN    shift, and go to state 202
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 179
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' . blocCod RETURN valoare ';' '}'
+   64                 | FUNC TIP ID '(' declarareParam ')' '{' . RETURN valoare ';' '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    RETURN    shift, and go to state 203
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 204
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 180
+
+   70 declarareParam: declarareParam ',' parametru .
+
+    $default  reduce using rule 70 (declarareParam)
+
+
+State 181
+
+   45 expresie: '(' expresie ')' .
+
+    $default  reduce using rule 45 (expresie)
+
+
+State 182
+
+   46 expresie: expresie . ADD expresie
+   46         | expresie ADD expresie .
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+
+    $default  reduce using rule 46 (expresie)
+
+
+State 183
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   47         | expresie SUB expresie .
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+
+    $default  reduce using rule 47 (expresie)
+
+
+State 184
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   49         | expresie DIV expresie .
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    ADD  shift, and go to state 151
+    SUB  shift, and go to state 152
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+
+    $default  reduce using rule 49 (expresie)
+
+
+State 185
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   48         | expresie MUL expresie .
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    ADD  shift, and go to state 151
+    SUB  shift, and go to state 152
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+    EQ   shift, and go to state 159
+    GT   shift, and go to state 160
+    GE   shift, and go to state 161
+    LT   shift, and go to state 162
+    LE   shift, and go to state 163
+
+    $default  reduce using rule 48 (expresie)
+
+
+State 186
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   55         | expresie AND expresie .
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    $default  reduce using rule 55 (expresie)
+
+
+State 187
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   56         | expresie OR expresie .
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    $default  reduce using rule 56 (expresie)
+
+
+State 188
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   57         | expresie XOR expresie .
+   58         | expresie . NOT expresie
+
+    $default  reduce using rule 57 (expresie)
+
+
+State 189
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+   58         | expresie NOT expresie .
+
+    $default  reduce using rule 58 (expresie)
+
+
+State 190
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   50         | expresie EQ expresie .
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+
+    $default  reduce using rule 50 (expresie)
+
+
+State 191
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   51         | expresie GT expresie .
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+
+    $default  reduce using rule 51 (expresie)
+
+
+State 192
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   53         | expresie GE expresie .
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+
+    $default  reduce using rule 53 (expresie)
+
+
+State 193
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   52         | expresie LT expresie .
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+
+    $default  reduce using rule 52 (expresie)
+
+
+State 194
+
+   46 expresie: expresie . ADD expresie
+   47         | expresie . SUB expresie
+   48         | expresie . MUL expresie
+   49         | expresie . DIV expresie
+   50         | expresie . EQ expresie
+   51         | expresie . GT expresie
+   52         | expresie . LT expresie
+   53         | expresie . GE expresie
+   54         | expresie . LE expresie
+   54         | expresie LE expresie .
+   55         | expresie . AND expresie
+   56         | expresie . OR expresie
+   57         | expresie . XOR expresie
+   58         | expresie . NOT expresie
+
+    AND  shift, and go to state 155
+    OR   shift, and go to state 156
+    XOR  shift, and go to state 157
+    NOT  shift, and go to state 158
+
+    $default  reduce using rule 54 (expresie)
+
+
+State 195
+
+   74 blocCod: blocCod . linieCod
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod . '}' IF '(' valoare ')' ';'
+   91              | IF '(' valoare ')' '{' blocCod . '}' ELSE '{' blocCod '}'
+   92              | IF '(' valoare ')' '{' blocCod . '}' ELSE ';'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 205
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 196
+
+   93 controlIfElse: IF '(' valoare ')' ';' ELSE . '{' blocCod '}'
+   94              | IF '(' valoare ')' ';' ELSE . ';'
+
+    '{'  shift, and go to state 206
+    ';'  shift, and go to state 207
+
+
+State 197
+
+   74 blocCod: blocCod . linieCod
+   95 controlWhile: WHILE '(' valoare ')' '{' blocCod . '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 208
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 198
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' . FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_STOP  shift, and go to state 209
+
+
+State 199
+
+   26 declarareStruct: VARCONST '@' ID DIMENSIUNE ID ATRIBUIRE '[' listaValori ']' .
+
+    $default  reduce using rule 26 (declarareStruct)
+
+
+State 200
+
+   72 parametru: VARCONST TIP DIMENSIUNE ID .
+
+    $default  reduce using rule 72 (parametru)
+
+
+State 201
+
+   62 declarareFunctie: FUNC TIP ID '(' ')' '{' RETURN valoare . ';' '}'
+
+    ';'  shift, and go to state 210
+
+
+State 202
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod RETURN . valoare ';' '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 211
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 203
+
+   64 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' RETURN . valoare ';' '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 212
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 204
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' blocCod . RETURN valoare ';' '}'
+   74 blocCod: blocCod . linieCod
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    RETURN    shift, and go to state 213
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 205
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' . IF '(' valoare ')' ';'
+   91              | IF '(' valoare ')' '{' blocCod '}' . ELSE '{' blocCod '}'
+   92              | IF '(' valoare ')' '{' blocCod '}' . ELSE ';'
+
+    IF    shift, and go to state 214
+    ELSE  shift, and go to state 215
+
+
+State 206
+
+   93 controlIfElse: IF '(' valoare ')' ';' ELSE '{' . blocCod '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 216
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 207
+
+   94 controlIfElse: IF '(' valoare ')' ';' ELSE ';' .
+
+    $default  reduce using rule 94 (controlIfElse)
+
+
+State 208
+
+   95 controlWhile: WHILE '(' valoare ')' '{' blocCod '}' .
+
+    $default  reduce using rule 95 (controlWhile)
+
+
+State 209
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP . ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 217
+
+
+State 210
+
+   62 declarareFunctie: FUNC TIP ID '(' ')' '{' RETURN valoare ';' . '}'
+
+    '}'  shift, and go to state 218
+
+
+State 211
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod RETURN valoare . ';' '}'
+
+    ';'  shift, and go to state 219
+
+
+State 212
+
+   64 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' RETURN valoare . ';' '}'
+
+    ';'  shift, and go to state 220
+
+
+State 213
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' blocCod RETURN . valoare ';' '}'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 221
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 214
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF . '(' valoare ')' ';'
+
+    '('  shift, and go to state 222
+
+
+State 215
+
+   91 controlIfElse: IF '(' valoare ')' '{' blocCod '}' ELSE . '{' blocCod '}'
+   92              | IF '(' valoare ')' '{' blocCod '}' ELSE . ';'
+
+    '{'  shift, and go to state 223
+    ';'  shift, and go to state 224
+
+
+State 216
+
+   74 blocCod: blocCod . linieCod
+   93 controlIfElse: IF '(' valoare ')' ';' ELSE '{' blocCod . '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 225
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 217
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE . valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 226
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 218
+
+   62 declarareFunctie: FUNC TIP ID '(' ')' '{' RETURN valoare ';' '}' .
+
+    $default  reduce using rule 62 (declarareFunctie)
+
+
+State 219
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod RETURN valoare ';' . '}'
+
+    '}'  shift, and go to state 227
+
+
+State 220
+
+   64 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' RETURN valoare ';' . '}'
+
+    '}'  shift, and go to state 228
+
+
+State 221
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' blocCod RETURN valoare . ';' '}'
+
+    ';'  shift, and go to state 229
+
+
+State 222
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF '(' . valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 230
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 223
+
+   91 controlIfElse: IF '(' valoare ')' '{' blocCod '}' ELSE '{' . blocCod '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 231
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 224
+
+   92 controlIfElse: IF '(' valoare ')' '{' blocCod '}' ELSE ';' .
+
+    $default  reduce using rule 92 (controlIfElse)
+
+
+State 225
+
+   93 controlIfElse: IF '(' valoare ')' ';' ELSE '{' blocCod '}' .
+
+    $default  reduce using rule 93 (controlIfElse)
+
+
+State 226
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare . ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ','  shift, and go to state 232
+
+
+State 227
+
+   61 declarareFunctie: FUNC TIP ID '(' ')' '{' blocCod RETURN valoare ';' '}' .
+
+    $default  reduce using rule 61 (declarareFunctie)
+
+
+State 228
+
+   64 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' RETURN valoare ';' '}' .
+
+    $default  reduce using rule 64 (declarareFunctie)
+
+
+State 229
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' blocCod RETURN valoare ';' . '}'
+
+    '}'  shift, and go to state 233
+
+
+State 230
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF '(' valoare . ')' ';'
+
+    ')'  shift, and go to state 234
+
+
+State 231
+
+   74 blocCod: blocCod . linieCod
+   91 controlIfElse: IF '(' valoare ')' '{' blocCod '}' ELSE '{' blocCod . '}'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 235
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 232
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' . FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_STEP  shift, and go to state 236
+
+
+State 233
+
+   63 declarareFunctie: FUNC TIP ID '(' declarareParam ')' '{' blocCod RETURN valoare ';' '}' .
+
+    $default  reduce using rule 63 (declarareFunctie)
+
+
+State 234
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF '(' valoare ')' . ';'
+
+    ';'  shift, and go to state 237
+
+
+State 235
+
+   91 controlIfElse: IF '(' valoare ')' '{' blocCod '}' ELSE '{' blocCod '}' .
+
+    $default  reduce using rule 91 (controlIfElse)
+
+
+State 236
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP . ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 238
+
+
+State 237
+
+   90 controlIfElse: IF '(' valoare ')' '{' blocCod '}' IF '(' valoare ')' ';' .
+
+    $default  reduce using rule 90 (controlIfElse)
+
+
+State 238
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE . valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 239
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 239
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare . ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ')'  shift, and go to state 240
+
+
+State 240
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' . '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    '{'  shift, and go to state 241
+
+
+State 241
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' . blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    blocCod            go to state 242
+    linieCod           go to state 53
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 242
+
+   74 blocCod: blocCod . linieCod
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod . '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID        shift, and go to state 43
+    VARCONST  shift, and go to state 8
+    STRUCT    shift, and go to state 9
+    IF        shift, and go to state 44
+    WHILE     shift, and go to state 45
+    FOR       shift, and go to state 46
+    '}'       shift, and go to state 243
+
+    declarareVar       go to state 48
+    constructieStruct  go to state 49
+    declarareStruct    go to state 50
+    apelFunctie        go to state 51
+    linieCod           go to state 78
+    asignare           go to state 54
+    accesArray         go to state 55
+    accesStruct        go to state 56
+    controlIfElse      go to state 57
+    controlWhile       go to state 58
+    controlFor         go to state 59
+
+
+State 243
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' . FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR  shift, and go to state 244
+
+
+State 244
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR . '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    '('  shift, and go to state 245
+
+
+State 245
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' . FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_START  shift, and go to state 246
+
+
+State 246
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START . ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 247
+
+
+State 247
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE . valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 248
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 248
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare . ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ','  shift, and go to state 249
+
+
+State 249
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' . FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_STOP  shift, and go to state 250
+
+
+State 250
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP . ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 251
+
+
+State 251
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE . valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 252
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 252
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare . ',' FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    ','  shift, and go to state 253
+
+
+State 253
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' . FOR_STEP ATRIBUIRE valoare ')' ';'
+
+    FOR_STEP  shift, and go to state 254
+
+
+State 254
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP . ATRIBUIRE valoare ')' ';'
+
+    ATRIBUIRE  shift, and go to state 255
+
+
+State 255
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE . valoare ')' ';'
+
+    ID     shift, and go to state 92
+    NUMAR  shift, and go to state 93
+    SIR    shift, and go to state 94
+    '-'    shift, and go to state 97
+    '$'    shift, and go to state 98
+
+    valoare      go to state 256
+    apelFunctie  go to state 101
+    accesArray   go to state 102
+    accesStruct  go to state 103
+
+
+State 256
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare . ')' ';'
+
+    ')'  shift, and go to state 257
+
+
+State 257
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' . ';'
+
+    ';'  shift, and go to state 258
+
+
+State 258
+
+   97 controlFor: FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' '{' blocCod '}' FOR '(' FOR_START ATRIBUIRE valoare ',' FOR_STOP ATRIBUIRE valoare ',' FOR_STEP ATRIBUIRE valoare ')' ';' .
+
+    $default  reduce using rule 97 (controlFor)
