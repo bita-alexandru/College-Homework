@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1617099523 source:d:\diverse\facultate\gpc\tema3\main.cpp
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<assert.h>
+	<float.h>
+	<GL/glut.h>
+
+1426346128 d:\utilitare\mingw\include\gl\glut.h
+	"freeglut_std.h"
+
+1426346128 d:\utilitare\mingw\include\gl\freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1526093414 d:\utilitare\mingw\include\gl\gl.h
+	<windows.h>
+	<stddef.h>
+
+1526093414 d:\utilitare\mingw\include\gl\glu.h
+	<GL/gl.h>
+
