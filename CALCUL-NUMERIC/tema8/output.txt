@@ -1,0 +1,15 @@
+function: 2*x**2
+
+[First Method]
+x0: 3.0
+solution found at iteration number: 2
+x: -5.218048215738236e-09
+x is a minimum
+
+[Second Method]
+x0: 3.0
+solution found at iteration number: 2
+x: -4.644433282408045e-09
+x is a minimum
+
+time elapsed: 0.002752100000000368
